@@ -27,24 +27,26 @@ func main() {
 	}
 	logs.Debug("load conf succ, config:%v", appConfig)
 
+	//初始化Etcd、获取配置
+	collectConf, err := initEtcd(appConfig.etcdAddr, appConfig.etcdKey)
+	if err != nil {
+		logs.Error("init etcd failed, err:%v", err)
+		return
+	}
+	logs.Debug("initialize etcd succ")
+
 	//初始化tailconfig
-	err = tailf.InitTail(appConfig.collectConf, appConfig.chanSize)
+	err = tailf.InitTail(collectConf, appConfig.chanSize)
 	if err != nil {
 		logs.Error("init tail failed, err:%v", err)
 		return
 	}
-	logs.Debug("initialize succ")
+	logs.Debug("initialize tailf succ")
 
 	//初始化kafka配置
 	err = kafka.InitKafka(appConfig.kafkaAddr)
 	if err != nil {
 		logs.Error("initkafka failed, err:%v", err)
-	}
-	//初始化Etcd
-	err = initEtcd(appConfig.etcdAddr, appConfig.etcdKey)
-	if err != nil {
-		logs.Error("init etcd failed, err:%v", err)
-		return
 	}
 
 	logs.Debug("initialize all succ")
