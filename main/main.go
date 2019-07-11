@@ -10,7 +10,7 @@ import (
 func main() {
 
 	//读取加载配置文件
-	filename := "./logagent.conf"
+	filename := "./conf/logagent.conf"
 	err := loadConf("ini", filename)
 	if err != nil {
 		fmt.Printf("load conf faild, err:%v\n", err)

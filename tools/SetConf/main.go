@@ -2,11 +2,11 @@ package main
 
 import (
 	"awesomeProject/logagent/tailf"
+	"context"
 	"encoding/json"
 	"fmt"
 	"go.etcd.io/etcd/clientv3"
 	"time"
-	"context"
 )
 
 
@@ -44,14 +44,25 @@ func SetLogConfToEtcd() {
 		return
 	}
 
-
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+
+
+	//put
 	_, err = cli.Put(ctx, EtcdKey,string(data))
 	cancel()
 	if err != nil {
 		fmt.Println("put failed, err:", err)
 		return
 	}
+
+
+	//del
+	//_, err = cli.Delete(ctx,EtcdKey)
+	//cancel()
+	//if err != nil {
+	//	fmt.Println("put failed, err:", err)
+	//	return
+	//}
 
 
 	ctx, cancel = context.WithTimeout(context.Background(), time.Second)

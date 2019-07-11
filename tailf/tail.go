@@ -146,5 +146,4 @@ func readFromTail(tailObj *TailObj) {
 			return
 		}
 	}
-
 }
